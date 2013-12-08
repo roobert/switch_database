@@ -1,12 +1,13 @@
 -- populate networks
-INSERT INTO network (location) VALUES ('brighton');
-INSERT INTO network (location) VALUES ('bunker');
+INSERT INTO network (location) VALUES 'brighton';
+INSERT INTO network (location) VALUES 'bunker';
 
-INSERT INTO host (name) SELECT 'ispsw01f';
-INSERT INTO host (name) SELECT 'ispsw03xa';
-INSERT INTO host (name) SELECT 'ispsw03xg';
-INSERT INTO host (name) SELECT 'ispsw03yc';
-INSERT INTO host (name) SELECT 'ispsw03yh';
+-- add switches
+INSERT INTO host (name) VALUES 'ispsw01f';
+INSERT INTO host (name) VALUES 'ispsw03xa';
+INSERT INTO host (name) VALUES 'ispsw03xg';
+INSERT INTO host (name) VALUES 'ispsw03yc';
+INSERT INTO host (name) VALUES 'ispsw03yh';
 
 -- populates switches
 INSERT INTO switch (host, stack_position, network) SELECT id FROM host WHERE name = 'ispsw01f', 1, id FROM network WHERE location = 'brighton';
