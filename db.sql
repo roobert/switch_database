@@ -5,14 +5,22 @@ CREATE TABLE network (
   location TEXT NOT NULL UNIQUE
 );
 
+-- hosts
+
+CREATE TABLE host (
+  id       SERIAL PRIMARY KEY,
+  hostname TEXT NOT NULL UNIQUE,
+  CHECK (hostname ~* '^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$')
+)
+
 -- switches
 
 CREATE TABLE switch (
   id             SERIAL PRIMARY KEY,
+  hostname       TEXT REFERENCES host(id)
   network        INTEGER REFERENCES network(id),
-  hostname       TEXT NOT NULL,
   stack_position INTEGER NOT NULL,
-  CHECK (stack_position > 0 AND stack_position < 1024)
+  CHECK (stack_position > 0 AND stack_position < 1024),
 );
 
 CREATE TYPE trunk_mode  AS ENUM ('trunk', '');
@@ -46,8 +54,7 @@ CREATE TABLE vlan (
 CREATE TABLE machine (
   id       SERIAL PRIMARY KEY,
   network  INTEGER REFERENCES network(id),
-  hostname TEXT NOT NULL UNIQUE,
-  CHECK (hostname ~* '^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$')
+  hostname TEXT REFERENCES host(id)
 );
 
 CREATE TABLE machine_interface (
