@@ -9,7 +9,7 @@ CREATE TABLE network (
 
 CREATE TABLE host (
   id       SERIAL PRIMARY KEY,
-  hostname TEXT NOT NULL UNIQUE,
+  name     TEXT NOT NULL UNIQUE,
   CHECK (hostname ~* '^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$')
 )
 
@@ -17,7 +17,7 @@ CREATE TABLE host (
 
 CREATE TABLE switch (
   id             SERIAL PRIMARY KEY,
-  hostname       TEXT REFERENCES host(id)
+  host           TEXT REFERENCES host(id)
   network        INTEGER REFERENCES network(id),
   stack_position INTEGER NOT NULL,
   CHECK (stack_position > 0 AND stack_position < 1024),
@@ -54,13 +54,13 @@ CREATE TABLE vlan (
 CREATE TABLE machine (
   id       SERIAL PRIMARY KEY,
   network  INTEGER REFERENCES network(id),
-  hostname TEXT REFERENCES host(id)
+  host     TEXT REFERENCES host(id)
 );
 
 CREATE TABLE machine_interface (
   id        SERIAL PRIMARY KEY,
   hostname  INTEGER REFERENCES machine(id),
-  interface TEXT NOT NULL,
+  machine   TEXT NOT NULL,
   mac       MACADDR NOT NULL UNIQUE,
   CHECK (interface ~* '^[a-z]+[0-9]+(:[0-9]+)?$')
 );
