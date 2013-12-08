@@ -10,17 +10,17 @@ CREATE TABLE network (
 CREATE TABLE host (
   id       SERIAL PRIMARY KEY,
   name     TEXT NOT NULL UNIQUE,
-  CHECK (hostname ~* '^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$')
-)
+  CHECK (name ~* '^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$')
+);
 
 -- switches
 
 CREATE TABLE switch (
   id             SERIAL PRIMARY KEY,
-  host           TEXT REFERENCES host(id)
+  host           INTEGER REFERENCES host(id),
   network        INTEGER REFERENCES network(id),
   stack_position INTEGER NOT NULL,
-  CHECK (stack_position > 0 AND stack_position < 1024),
+  CHECK (stack_position > 0 AND stack_position < 1024)
 );
 
 CREATE TYPE trunk_mode  AS ENUM ('trunk', '');
@@ -54,15 +54,15 @@ CREATE TABLE vlan (
 CREATE TABLE machine (
   id       SERIAL PRIMARY KEY,
   network  INTEGER REFERENCES network(id),
-  host     TEXT REFERENCES host(id)
+  host     INTEGER REFERENCES host(id)
 );
 
 CREATE TABLE machine_interface (
   id        SERIAL PRIMARY KEY,
-  hostname  INTEGER REFERENCES machine(id),
-  machine   TEXT NOT NULL,
+  machine   INTEGER REFERENCES machine(id),
+  name      TEXT,
   mac       MACADDR NOT NULL UNIQUE,
-  CHECK (interface ~* '^[a-z]+[0-9]+(:[0-9]+)?$')
+  CHECK (name ~* '^[a-z]+[0-9]+(:[0-9]+)?$')
 );
 
 CREATE TABLE ip (
