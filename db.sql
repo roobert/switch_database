@@ -30,7 +30,7 @@ CREATE TABLE switch_interface (
   state        port_state,
   admin_state  admin_state,
   trunk_mode   trunk_mode,
-  CHECK (port > 0),
+  CHECK (port > 0 and port < 1024),
   CHECK (duplex % 10 = 0)
 );
 
