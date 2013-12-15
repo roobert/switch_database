@@ -1,3 +1,9 @@
+--
+-- TODO
+-- * add stuff to delete related stuff on deletion
+--
+
+
 -- networks
 
 CREATE TABLE network (
