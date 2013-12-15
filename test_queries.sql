@@ -32,6 +32,11 @@ INSERT INTO switch_interface (description, host_id) SELECT 'cspblah01d-eth1', id
 
 SELECT * FROM switch_interface;
 
+-- add ethernet
+INSERT INTO ethernet (port, switch_interface_id) SELECT 1, id FROM switch_interface WHERE description = 'cspblah01d-eth1';
+
+SELECT * FROM ethernet;
+
 -- add machine interfaces
 INSERT INTO machine_interface (name, mac, host_id) SELECT 'eth0', '000000000000', id FROM host WHERE name = 'devrob01a';
 INSERT INTO machine_interface (name, mac, host_id) SELECT 'eth1', '000000000001', id FROM host WHERE name = 'devrob01a';
@@ -63,12 +68,14 @@ SELECT
   network.location AS network,
   host.name AS switch,
   host.stack_position AS stack_position,
-  switch_interface.description AS description
+  ethernet.port AS port
   FROM host
   INNER JOIN switch_interface
   ON switch_interface.host_id = host.id
   INNER JOIN network
-  ON host.network_id = network.id;
+  ON host.network_id = network.id
+  INNER JOIN ethernet
+  ON ethernet.switch_interface_id = switch_interface.id;
 
 SELECT * FROM switch_interface_stuff;
 
