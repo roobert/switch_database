@@ -42,13 +42,15 @@ SELECT * FROM machine_interface;
 
 -- join examples
 
-SELECT network.location, host.name, host.stack_position, switch_interface.description FROM host
+SELECT network.location, host.name, host.stack_position, switch_interface.description
+  FROM host
   INNER JOIN switch_interface
   ON switch_interface.host_id = host.id
   INNER JOIN network
   ON host.network_id = network.id;
 
-SELECT network.location, host.name, machine_interface.name, machine_interface.mac FROM host
+SELECT network.location, host.name, machine_interface.name, machine_interface.mac
+  FROM host
   INNER JOIN machine_interface
   ON machine_interface.host_id = host.id
   INNER JOIN network
@@ -57,17 +59,26 @@ SELECT network.location, host.name, machine_interface.name, machine_interface.ma
 -- view examples
 
 CREATE VIEW switch_interface_stuff AS
-SELECT network.location AS network, host.name AS switch, host.stack_position AS stack_position, switch_interface.description AS description FROM host
+SELECT
+  network.location AS network,
+  host.name AS switch,
+  host.stack_position AS stack_position,
+  switch_interface.description AS description
+  FROM host
   INNER JOIN switch_interface
   ON switch_interface.host_id = host.id
   INNER JOIN network
   ON host.network_id = network.id;
 
-
 SELECT * FROM switch_interface_stuff;
 
 CREATE VIEW machine_interface_stuff AS
-SELECT network.location AS network, host.name AS machine, machine_interface.name AS interface, machine_interface.mac AS mac FROM host
+SELECT
+  network.location AS network,
+  host.name AS machine,
+  machine_interface.name AS interface,
+  machine_interface.mac AS mac
+  FROM host
   INNER JOIN machine_interface
   ON machine_interface.host_id = host.id
   INNER JOIN network
