@@ -51,7 +51,6 @@ CREATE TABLE port_channel (
   switch_interface_id INTEGER REFERENCES switch_interface(id)
 );
 
-
 -- switch interface attributes
 
 CREATE TYPE switchport_mode AS ENUM ('access', 'general');
@@ -74,8 +73,6 @@ CREATE TABLE channel_group (
 
 CREATE TYPE portfast_mode AS ENUM ('portfast', 'disable');
 
---  interface INTEGER REFERENCES ethernet(id),
--- can connect to switch_interface and port-channel
 CREATE TABLE spanning_tree (
   id                  SERIAL PRIMARY KEY,
   ethernet_id         INTEGER REFERENCES ethernet(id),
