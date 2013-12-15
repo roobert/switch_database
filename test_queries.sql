@@ -1,57 +1,54 @@
 -- populate networks
-INSERT INTO network (location) VALUES 'brighton';
-INSERT INTO network (location) VALUES 'bunker';
+INSERT INTO network (location) VALUES ('brighton');
+INSERT INTO network (location) VALUES ('bunker');
 
--- add switches
-INSERT INTO host (name) VALUES 'ispsw01f';
-INSERT INTO host (name) VALUES 'ispsw03xa';
-INSERT INTO host (name) VALUES 'ispsw03xg';
-INSERT INTO host (name) VALUES 'ispsw03yc';
-INSERT INTO host (name) VALUES 'ispsw03yh';
+SELECT * FROM network;
 
--- populates switches
-INSERT INTO switch (host, stack_position, network) SELECT id FROM host WHERE name = 'ispsw01f', 1, id FROM network WHERE location = 'brighton';
-INSERT INTO switch (host, stack_position, network) SELECT id FROM host WHERE name = 'ispsw01f', 2, id FROM network WHERE location = 'brighton';
+-- add switch hosts
+INSERT INTO host (name, stack_position, network_id) SELECT 'ispsw01f',  1, id FROM network WHERE location = 'brighton';
+INSERT INTO host (name, stack_position, network_id) SELECT 'ispsw01f',  2, id FROM network WHERE location = 'brighton';
+INSERT INTO host (name, stack_position, network_id) SELECT 'ispsw03xa', 1, id FROM network WHERE location = 'bunker';
+INSERT INTO host (name, stack_position, network_id) SELECT 'ispsw03xa', 2, id FROM network WHERE location = 'bunker';
+INSERT INTO host (name, stack_position, network_id) SELECT 'ispsw03xg', 1, id FROM network WHERE location = 'bunker';
+INSERT INTO host (name, stack_position, network_id) SELECT 'ispsw03xg', 2, id FROM network WHERE location = 'bunker';
+INSERT INTO host (name, stack_position, network_id) SELECT 'ispsw03yc', 1, id FROM network WHERE location = 'bunker';
+INSERT INTO host (name, stack_position, network_id) SELECT 'ispsw03yc', 2, id FROM network WHERE location = 'bunker';
+INSERT INTO host (name, stack_position, network_id) SELECT 'ispsw03yh', 1, id FROM network WHERE location = 'bunker';
+INSERT INTO host (name, stack_position, network_id) SELECT 'ispsw03yh', 2, id FROM network WHERE location = 'bunker';
 
-INSERT INTO switch (host, stack_position, network) SELECT id FROM host WHERE name = 'ispsw03xa', 1, id FROM network WHERE location = 'bunker';
-INSERT INTO switch (host, stack_position, network) SELECT id FROM host WHERE name = 'ispsw03xa', 2, id FROM network WHERE location = 'bunker';
-INSERT INTO switch (host, stack_position, network) SELECT id FROM host WHERE name = 'ispsw03xg', 1, id FROM network WHERE location = 'bunker';
-INSERT INTO switch (host, stack_position, network) SELECT id FROM host WHERE name = 'ispsw03xg', 2, id FROM network WHERE location = 'bunker';
-INSERT INTO switch (host, stack_position, network) SELECT id FROM host WHERE name = 'ispsw03yc', 1, id FROM network WHERE location = 'bunker';
-INSERT INTO switch (host, stack_position, network) SELECT id FROM host WHERE name = 'ispsw03yc', 2, id FROM network WHERE location = 'bunker';
-INSERT INTO switch (host, stack_position, network) SELECT id FROM host WHERE name = 'ispsw03yh', 1, id FROM network WHERE location = 'bunker';
-INSERT INTO switch (host, stack_position, network) SELECT id FROM host WHERE name = 'ispsw03yh', 2, id FROM network WHERE location = 'bunker';
+-- add machines
+INSERT INTO host (name, network_id) SELECT 'devrob01a',  id FROM network WHERE location = 'brighton';
+INSERT INTO host (name, network_id) SELECT 'devrob01b',  id FROM network WHERE location = 'brighton';
+INSERT INTO host (name, network_id) SELECT 'devrob01c',  id FROM network WHERE location = 'brighton';
+INSERT INTO host (name, network_id) SELECT 'devrob01d',  id FROM network WHERE location = 'brighton';
 
--- populate switch interfaces
-INSERT INTO switch_interface (port, switch) SELECT 1, id FROM switch WHERE hostname = 'ispsw01f' AND stack_position = 1;
-INSERT INTO switch_interface (port, switch) SELECT 2, id FROM switch WHERE hostname = 'ispsw01f' AND stack_position = 1;
-INSERT INTO switch_interface (port, switch) SELECT 3, id FROM switch WHERE hostname = 'ispsw01f' AND stack_position = 1;
-INSERT INTO switch_interface (port, switch) SELECT 4, id FROM switch WHERE hostname = 'ispsw01f' AND stack_position = 1;
-INSERT INTO switch_interface (port, switch) SELECT 5, id FROM switch WHERE hostname = 'ispsw01f' AND stack_position = 1;
-INSERT INTO switch_interface (port, switch) SELECT 6, id FROM switch WHERE hostname = 'ispsw01f' AND stack_position = 1;
-INSERT INTO switch_interface (port, switch) SELECT 7, id FROM switch WHERE hostname = 'ispsw01f' AND stack_position = 1;
-INSERT INTO switch_interface (port, switch) SELECT 8, id FROM switch WHERE hostname = 'ispsw01f' AND stack_position = 1;
-INSERT INTO switch_interface (port, switch) SELECT 9, id FROM switch WHERE hostname = 'ispsw01f' AND stack_position = 1;
+SELECT * FROM host;
 
-INSERT INTO switch_interface (port, switch) SELECT 1, id FROM switch WHERE hostname = 'ispsw03xa' AND stack_position = 1;
-INSERT INTO switch_interface (port, switch) SELECT 2, id FROM switch WHERE hostname = 'ispsw03xa' AND stack_position = 1;
-INSERT INTO switch_interface (port, switch) SELECT 3, id FROM switch WHERE hostname = 'ispsw03xa' AND stack_position = 1;
-INSERT INTO switch_interface (port, switch) SELECT 4, id FROM switch WHERE hostname = 'ispsw03xa' AND stack_position = 1;
-INSERT INTO switch_interface (port, switch) SELECT 5, id FROM switch WHERE hostname = 'ispsw03xa' AND stack_position = 1;
-INSERT INTO switch_interface (port, switch) SELECT 6, id FROM switch WHERE hostname = 'ispsw03xa' AND stack_position = 1;
-INSERT INTO switch_interface (port, switch) SELECT 7, id FROM switch WHERE hostname = 'ispsw03xa' AND stack_position = 1;
-INSERT INTO switch_interface (port, switch) SELECT 8, id FROM switch WHERE hostname = 'ispsw03xa' AND stack_position = 1;
-INSERT INTO switch_interface (port, switch) SELECT 9, id FROM switch WHERE hostname = 'ispsw03xa' AND stack_position = 1;
+-- add switch interfaces
+INSERT INTO switch_interface (description, host_id) SELECT 'cspblah01a-description', id FROM host WHERE name = 'ispsw01f' AND stack_position = 1;
+INSERT INTO switch_interface (description, host_id) SELECT 'cspblah01b-eth1', id FROM host WHERE name = 'ispsw01f' AND stack_position = 1;
+INSERT INTO switch_interface (description, host_id) SELECT 'cspblah01c-eth8', id FROM host WHERE name = 'ispsw01f' AND stack_position = 2;
+INSERT INTO switch_interface (description, host_id) SELECT 'cspblah01d-eth1', id FROM host WHERE name = 'ispsw01f' AND stack_position = 2;
 
--- populate machines
-INSERT INTO machine (hostname, network) SELECT 'isptest01a', id FROM network WHERE location = 'brighton';
-INSERT INTO machine_interface (interface, mac, hostname) SELECT 'eth0', '00:11:22:33:44:55', id FROM machine WHERE hostname = 'isptest01a';
+SELECT * FROM switch_interface;
 
--- run some queries
-SELECT network.location, machine.hostname FROM machine
-  INNER JOIN network ON machine.network = network.id;
+-- add machine interfaces
+INSERT INTO machine_interface (name, mac, host_id) SELECT 'eth0', '000000000000', id FROM host WHERE name = 'devrob01a';
+INSERT INTO machine_interface (name, mac, host_id) SELECT 'eth1', '000000000001', id FROM host WHERE name = 'devrob01a';
+INSERT INTO machine_interface (name, mac, host_id) SELECT 'eth8', '000000000002', id FROM host WHERE name = 'devrob01c';
+INSERT INTO machine_interface (name, mac, host_id) SELECT 'eth9', '000000000003', id FROM host WHERE name = 'devrob01d';
 
-SELECT network.location, machine.hostname, machine_interface.interface FROM network
-  INNER JOIN machine ON network.id = machine.network
-  INNER JOIN machine_interface ON machine.id = machine_interface.hostname;
+SELECT * FROM machine_interface;
+
+SELECT network.location, host.name, host.stack_position, switch_interface.description FROM host
+  INNER JOIN switch_interface
+  ON switch_interface.host_id = host.id
+  INNER JOIN network
+  ON host.network_id = network.id;
+
+SELECT network.location, host.name, machine_interface.name, machine_interface.mac FROM host
+  INNER JOIN machine_interface
+  ON machine_interface.host_id = host.id
+  INNER JOIN network
+  ON host.network_id = network.id;
 
